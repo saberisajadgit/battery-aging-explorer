@@ -198,29 +198,29 @@ function BatteryViz({ soc, lli, lamA, lamC, sei, animPhase, hoveredMech }) {
         const x = charging
           ? sepX - 8 + frac * (cathX + cathW - sepX + 16)
           : cathX + cathW + 8 - frac * (cathX + cathW - sepX + 16);
-        return { id: i, x: Math.min(Math.max(x, 16), cathX + cathW + 8), y: 40 + (i * 47) % 220 };
+        return { id: i, x: Math.min(Math.max(x, 16), cathX + cathW + 8), y: 52 + (i * 47) % 240 };
       })
     : [];
 
   return (
-    <div style={{ position: "relative", width: "100%", height: 310 }}>
+    <div style={{ position: "relative", width: "100%", height: 355 }}>
       {/* Cu collector */}
-      <div style={{ position: "absolute", left: 0, top: 22, width: 14, height: 268,
+      <div style={{ position: "absolute", left: 0, top: 28, width: 14, height: 312,
         background: "linear-gradient(90deg,#a0622a,#cd853f)", borderRadius: "3px 0 0 3px" }} />
       {/* Al collector */}
-      <div style={{ position: "absolute", right: 0, top: 22, width: 14, height: 268,
+      <div style={{ position: "absolute", right: 0, top: 28, width: 14, height: 312,
         background: "linear-gradient(90deg,#999,#ccc)", borderRadius: "0 3px 3px 0" }} />
 
       {/* Anode body */}
       <div style={{
-        position: "absolute", left: 14, top: 22, width: anodeW, height: 268,
+        position: "absolute", left: 14, top: 28, width: anodeW, height: 312,
         background: "#0b1c35", overflow: "hidden",
         outline: hoveredMech === "lamA" ? `2px solid ${C.red}` : "none",
         transition: "width 0.5s, outline 0.2s",
       }}>
         {[0,1,2,3,4,5].map(i => (
           <div key={i} style={{
-            position: "absolute", left: 5, right: seiPx + 3, top: 14 + i * 40, height: 22,
+            position: "absolute", left: 5, right: seiPx + 3, top: 18 + i * 48, height: 26,
             background: i < deadAnodeCount ? "#101828" : "#1a3868",
             borderRadius: 2,
             border: `1px solid ${i < deadAnodeCount ? "#151e2e" : "#2a4888"}`,
@@ -250,7 +250,7 @@ function BatteryViz({ soc, lli, lamA, lamC, sei, animPhase, hoveredMech }) {
 
       {/* Separator */}
       <div style={{
-        position: "absolute", left: sepX, top: 22, width: 24, height: 268,
+        position: "absolute", left: sepX, top: 28, width: 24, height: 312,
         background: "repeating-linear-gradient(180deg,#0f1c34 0,#0f1c34 4px,#0c1828 4px,#0c1828 8px)",
         borderLeft: `1px solid ${C.border}`, borderRight: `1px solid ${C.border}`,
       }}>
@@ -261,14 +261,14 @@ function BatteryViz({ soc, lli, lamA, lamC, sei, animPhase, hoveredMech }) {
 
       {/* Cathode body */}
       <div style={{
-        position: "absolute", left: cathX, top: 22, width: cathW, height: 268,
+        position: "absolute", left: cathX, top: 28, width: cathW, height: 312,
         background: "#0d1826", overflow: "hidden",
         outline: hoveredMech === "lamC" ? `2px solid ${C.purple}` : "none",
         transition: "width 0.5s, outline 0.2s",
       }}>
         {[0,1,2,3,4,5].map(i => (
           <div key={i} style={{
-            position: "absolute", left: 5, right: 5, top: 14 + i * 40, height: 22,
+            position: "absolute", left: 5, right: 5, top: 18 + i * 48, height: 26,
             background: i >= 6 - deadCathodeCount ? "#110d24" : "#1e3260",
             borderRadius: 2,
             border: `1px solid ${i >= 6 - deadCathodeCount ? "#150f2a" : "#2a4270"}`,
@@ -282,7 +282,7 @@ function BatteryViz({ soc, lli, lamA, lamC, sei, animPhase, hoveredMech }) {
       {Array.from({ length: totalIons }, (_, i) => {
         const col = i % 5, row = Math.floor(i / 5);
         const x = 22 + col * Math.max(14, (anodeW - 28) / 5);
-        const y = 38 + row * 42;
+        const y = 46 + row * 50;
         const isLost = i < lostCount;
         const isDead = !isLost && i < lostCount + Math.round(deadAnodeCount * 4);
         const anodeFull = Math.round(totalIons * (1 - soc / 100));
@@ -304,7 +304,7 @@ function BatteryViz({ soc, lli, lamA, lamC, sei, animPhase, hoveredMech }) {
       {Array.from({ length: totalIons }, (_, i) => {
         const col = i % 5, row = Math.floor(i / 5);
         const x = cathX + 10 + col * Math.max(13, (cathW - 24) / 5);
-        const y = 38 + row * 42;
+        const y = 46 + row * 50;
         const isDead = i >= totalIons - Math.round(deadCathodeCount * 4);
         const cathFull = Math.round(totalIons * (soc / 100));
         const visible  = i < cathFull;
@@ -708,10 +708,10 @@ export default function BatteryAgingExplorer() {
           overflowY: "auto", display: "flex", flexDirection: "column", gap: 12 }}>
           <div style={{ fontSize: 8, color: C.muted, letterSpacing: 3 }}>CELL CROSS-SECTION</div>
 
-          <div style={{ flexShrink: 0, height: 310, position: "relative" }}>
-            <BatteryViz soc={soc} lli={lli} lamA={lamA} lamC={lamC}
-              sei={sei} animPhase={animPhase} hoveredMech={hoveredMech} />
-          </div>
+          <BatteryViz soc={soc} lli={lli} lamA={lamA} lamC={lamC}
+            sei={sei} animPhase={animPhase} hoveredMech={hoveredMech} />
+
+          <IonLegend />
 
           {/* SOC slider */}
           <div>
@@ -731,35 +731,6 @@ export default function BatteryAgingExplorer() {
             <div style={{ display: "flex", justifyContent: "space-between", fontSize: 7, color: C.muted, marginTop: 3 }}>
               <span>← discharge</span><span>charge →</span>
             </div>
-          </div>
-
-          {/* ── Ion Legend — standalone, never covered ── */}
-          <div style={{
-            display: "grid", gridTemplateColumns: "1fr 1fr",
-            gap: "6px 12px",
-            background: "#0a1628",
-            border: `1px solid ${C.border}`,
-            borderRadius: 6,
-            padding: "10px 14px",
-          }}>
-            <div style={{ fontSize: 8, color: C.muted, fontFamily: "monospace",
-              gridColumn: "1 / -1", letterSpacing: 2, marginBottom: 2 }}>ION LEGEND</div>
-            {[
-              [C.amber,   "none",    C.amber,   "Li⁺ active — intercalated"],
-              [C.teal,    "none",    C.teal,    "transit — crossing separator"],
-              ["#303030", C.amber,  "#8a9aaa",  "lost (LLI) — consumed by SEI"],
-              ["#1a0f2a", "#7a40c0","#8a9aaa",  "dead (LAM) — isolated particle"],
-            ].map(([fill, border, textCol, lbl]) => (
-              <div key={lbl} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <div style={{
-                  width: 10, height: 10, borderRadius: "50%", flexShrink: 0,
-                  background: fill,
-                  border: border !== "none" ? `1.5px solid ${border}` : "none",
-                  boxShadow: fill === C.amber ? `0 0 5px ${C.amber}` : fill === C.teal ? `0 0 5px ${C.teal}` : "none",
-                }} />
-                <span style={{ fontSize: 8, color: textCol, fontFamily: "monospace" }}>{lbl}</span>
-              </div>
-            ))}
           </div>
 
           {/* Cycle button */}
