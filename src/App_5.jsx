@@ -203,7 +203,7 @@ function BatteryViz({ soc, lli, lamA, lamC, sei, animPhase, hoveredMech }) {
     : [];
 
   return (
-    <div style={{ position: "relative", width: "100%", height: 355 }}>
+    <div style={{ position: "relative", width: "100%", height: 370 }}>
       {/* Cu collector */}
       <div style={{ position: "absolute", left: 0, top: 28, width: 14, height: 312,
         background: "linear-gradient(90deg,#a0622a,#cd853f)", borderRadius: "3px 0 0 3px" }} />
@@ -344,25 +344,22 @@ function BatteryViz({ soc, lli, lamA, lamC, sei, animPhase, hoveredMech }) {
 function IonLegend() {
   return (
     <div style={{
-      display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap",
-      background: "#0a1628",
-      border: `1px solid #1a2d4a`,
-      borderRadius: 6,
-      padding: "8px 12px",
-      fontSize: 9, color: "#4a6080", fontFamily: "monospace",
+      display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap",
+      fontSize: 8, color: C.muted, fontFamily: "monospace",
+      padding: "8px 0 4px", borderTop: `1px solid ${C.border}`,
     }}>
       {[
-        [C.amber,   "none",     C.amber,   "Li⁺ active"],
-        ["#2a2a2a", C.amber,   "#7a8a9a",  "lost (LLI)"],
-        ["#1a0f2a", "#7a40c0", "#7a8a9a",  "dead (LAM)"],
-        [C.teal,    "none",     C.teal,    "transit"],
+        [C.amber,   "none",       C.amber,   "Li⁺ (active)"],
+        ["#333",    C.amber,      C.muted,   "lost (LLI)"],
+        ["#1a0f2a", "#7a40c0",   C.muted,   "dead (LAM)"],
+        [C.teal,    "none",       C.teal,    "transit"],
       ].map(([fill, border, textCol, lbl]) => (
         <div key={lbl} style={{ display: "flex", alignItems: "center", gap: 5 }}>
           <div style={{
-            width: 10, height: 10, borderRadius: "50%", flexShrink: 0,
-            background: fill,
+            width: 9, height: 9, borderRadius: "50%",
+            background: fill, flexShrink: 0,
             border: border !== "none" ? `1.5px solid ${border}` : "none",
-            boxShadow: fill === C.amber ? `0 0 5px ${C.amber}` : fill === C.teal ? `0 0 5px ${C.teal}` : "none",
+            boxShadow: fill === C.amber ? `0 0 4px ${C.amber}88` : fill === C.teal ? `0 0 4px ${C.teal}88` : "none",
           }} />
           <span style={{ color: textCol }}>{lbl}</span>
         </div>
